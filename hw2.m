@@ -5,8 +5,6 @@
 
 function [] = hw2()
 
-
-
 L1 = 0.241;  % [m]
 L2 = 1.206;  % [m]
 % Solve the kinematics of the system, assuming a constant theta_dt
@@ -18,16 +16,22 @@ theta = zeros(n+1,1);  % initialize state vectors
 phi = zeros(n,1);
 phi_dt = zeros(n,1);
 phi_dt2 = zeros(n,1);
-
+xp = zeros(n,1);
+xp_dt = zeros(n,1);
+xp_dt2 = zeros(n,1);
 for i = 1:n
     phi(i) = asin(L1/L2*sin(theta(i)));
     phi_dt(i) = theta_dt*(L1*cos(theta(i)))/(L2*cos(phi(i)));
     phi_dt2(i) = 1/(L2*cos(phi(i)))*(L2*sin(phi(i))*phi_dt(i)^2-L1*sin(theta(i))*theta_dt^2);
+    xp(i) = L1*cos(theta(i))+L2*cos(phi(i));
+    xp_dt(i) = -L1*sin(theta(i))*theta_dt-L2*sin(phi(i))*phi_dt(i);
+    xp_dt2(i) = -L1*cos(theta(i))*theta_dt^2-L2*(cos(phi(i))*phi_dt(i)^2+sin(phi(i))*phi_dt2(i));
     theta(i+1) = dt*theta_dt + theta(i);
 end
 % remove last theta value
 theta(end) = [];
 % plot figures
+figure(1)
 subplot(2,2,1)
 plot(T,theta)
 xlabel('t [s]');
@@ -51,6 +55,25 @@ plot(T,phi_dt2);
 xlabel('t [s]');
 ylabel('rad/s2');
 legend('\ddot{\phi}','Location','best','Interpreter','latex');
+
+figure(2)
+subplot(2,2,1)
+plot(T,xp)
+xlabel('t [s]');
+ylabel('m');
+legend('xp','Location','best');
+
+subplot(2,2,2)
+plot(T,xp_dt)
+xlabel('t [s]');
+ylabel('m/s');
+legend('xp_dt','Location','best');
+
+subplot(2,2,3)
+plot(T,xp_dt2)
+xlabel('t [s]');
+ylabel('m/s^2');
+legend('xp_dt2','Location','best','Interpreter','latex');
 
 
 % A = [
