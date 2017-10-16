@@ -3,7 +3,7 @@
 % 10/14/2017
 % refer to p. 248 in textbook
 
-function [] = hw2()
+function [] = hw2a()
 
 L1 = 0.241;  % [m]
 L2 = 1.206;  % [m]
@@ -11,14 +11,16 @@ L2 = 1.206;  % [m]
 theta_dt = 39.5;  % [rad/s], constant angular velocity
 dt = 0.001;         % [s],  time step
 n = ceil(2*pi/(theta_dt*dt)) ; % total time steps, rounded up to nearest integer
-T = 0:dt:(n-1)*dt';
-theta = zeros(n+1,1);  % initialize state vectors
+T = [0:dt:(n-1)*dt]'; %#ok<NBRAK>
+theta = T*theta_dt;  % theta vector
+% initialize state vectors
 phi = zeros(n,1);
 phi_dt = zeros(n,1);
 phi_dt2 = zeros(n,1);
 xp = zeros(n,1);
 xp_dt = zeros(n,1);
 xp_dt2 = zeros(n,1);
+
 for i = 1:n
     phi(i) = asin(L1/L2*sin(theta(i)));
     phi_dt(i) = theta_dt*(L1*cos(theta(i)))/(L2*cos(phi(i)));
@@ -26,10 +28,11 @@ for i = 1:n
     xp(i) = L1*cos(theta(i))+L2*cos(phi(i));
     xp_dt(i) = -L1*sin(theta(i))*theta_dt-L2*sin(phi(i))*phi_dt(i);
     xp_dt2(i) = -L1*cos(theta(i))*theta_dt^2-L2*(cos(phi(i))*phi_dt(i)^2+sin(phi(i))*phi_dt2(i));
-    theta(i+1) = dt*theta_dt + theta(i);
 end
-% remove last theta value
-theta(end) = [];
+
+% Save data to .mat files
+save('hw2_data.mat');
+
 % plot figures
 figure(1)
 subplot(2,2,1)
@@ -48,13 +51,13 @@ subplot(2,2,3)
 plot(T,phi_dt)
 xlabel('t [s]');
 ylabel('rad/s');
-legend('\dot{\phi}','Location','best','Interpreter','latex');
+legend('$\dot{\phi}$','Location','best','Interpreter','latex');
 
 subplot(2,2,4)
 plot(T,phi_dt2);
 xlabel('t [s]');
 ylabel('rad/s2');
-legend('\ddot{\phi}','Location','best','Interpreter','latex');
+legend('$$\ddot{\phi}$$','Location','best','Interpreter','latex');
 
 figure(2)
 subplot(2,2,1)
