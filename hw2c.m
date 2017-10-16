@@ -51,9 +51,12 @@ for i = 1:n
     Bx(i) = x(2);
     By(i) = x(3);
     Cx(i) = x(4);
-    Cy(i) = x(5);
-     
+    Cy(i) = x(5);    
 end
+
+% Compute Ax, Ay reaction forces
+Ax = -Bx;
+Ay = w1 + By;
 
 save('hw2_data2.mat') % save data to .mat file
 
@@ -65,11 +68,12 @@ xlabel('t [s]');
 ylabel('M');
 legend('M(t)','Location','best');
 
+hold on
 subplot(2,3,2)
 plot(T,Bx)
 xlabel('t [s]');
 ylabel('B_x [N]');
-% legend('\phi','Location','best');
+legend('\phi','Location','best');
 
 subplot(2,3,3)
 plot(T,By)
