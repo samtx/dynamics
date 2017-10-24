@@ -69,11 +69,15 @@ for i = 1:n
 end
 
 % Compute Ax, Ay reaction forces
-Ax = -Bx; %#ok<NASGU>
-Ay = w1 + By; %#ok<NASGU>
+Ax = -Bx; 
+Ay = w1 + By; 
+Anet = sqrt(Ax.^2+Ay.^2); %#ok<NASGU>
+
+Bnet = sqrt(Bx.^2+By.^2); %#ok<NASGU>
+Cnet = sqrt(Cx.^2+Cy.^2); %#ok<NASGU>
 
 % Save data to .dat files
-vars = {'theta','phi','phi_dt','phi_dt2','xp','xp_dt','xp_dt2','M','Bx','By','Cx','Cy','Ax','Ay'};
+vars = {'theta','phi','phi_dt','phi_dt2','xp','xp_dt','xp_dt2','M','Bx','By','Cx','Cy','Ax','Ay','Anet','Bnet','Cnet'};
 for i = 1:length(vars)  % iterate through variables to save data
 	tbl = array2table([t, eval(vars{i})]);
     writetable(tbl,['data/',vars{i},'.dat'],'WriteVariableNames',false,'Delimiter',' ');
