@@ -73,12 +73,12 @@ w2 = m2*g;          % [N]      weight of arm BC
 I2g = m2*L2^2/12;   % [kg.m^2] moment of inertia
 
 % Initialize state vectors
-phi = zeros(n,1);
-phi_dt = zeros(n,1);
-phi_dt2 = zeros(n,1);
-xp = zeros(n,1);
-xp_dt = zeros(n,1);
-xp_dt2 = zeros(n,1);
+phi     = zeros(n,1);  % [rad]       phi angular positoin 
+phi_dt  = zeros(n,1);  % [rad/s]     phi angular velocity
+phi_dt2 = zeros(n,1);  % [rad/s^2]   phi angular acceleration
+xp      = zeros(n,1);  % [m]         piston position
+xp_dt   = zeros(n,1);  % [m/s]       piston velocity
+xp_dt2  = zeros(n,1);  % [m/s^2]     piston acceleration
 
 % Compute values for phi, phi_dt, phi_dt2, xp, xp_dt, xp_dt2 for each value of theta
 for i = 1:n
